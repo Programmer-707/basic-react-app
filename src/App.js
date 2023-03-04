@@ -1,8 +1,9 @@
 import ExpenseItems from "./components/ExpenseItems/ExpenseItems";
-import React from "react"
+import NewExpense from "./components/NewExpense/newExpense";
+import React, { useState } from "react";
 
 function App() {
-  const expenses = [
+  const [expenses, setExpenses] = useState([
     {
       title: "Car Insurance",
       id: 1,
@@ -23,11 +24,17 @@ function App() {
       amount: 7889.99,
       date: new Date(2022, 10, 19),
     },
-  ];
+  ]);
+
+  const updateExpense = (newExpenseData) => {
+    // setExpenses(expenses.push(newExpenseData));
+    console.log(expenses);
+  };
 
   return (
     <div>
       <h2>Lets get started</h2>
+      <NewExpense updateExpenses={updateExpense} />
       <ExpenseItems expenses={expenses} />
     </div>
   );
