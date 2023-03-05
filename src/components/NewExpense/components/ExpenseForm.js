@@ -21,20 +21,38 @@ const ExpenseForm = (props) => {
 
   const addAmount = (event) => {
     setexpenseData((prevState) => {
-      return { ...prevState, amount: event.target.value };
+      return { ...prevState, amount: parseFloat(event.target.value) };
     });
   };
 
   const addDate = (event) => {
     setexpenseData((prevState) => {
-      return { ...prevState, date: event.target.value };
+      return { ...prevState, date: new Date(event.target.value) };
     });
   };
 
   const addExpense = (event) => {
     event.preventDefault();
-    props.addNewExpense(expenseData)
+    props.updateExpenseList(expenseData);
   };
+
+  function formatDate(date) {
+    if(!date){
+      return ''
+    }
+
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+
+    return [year, month, day].join('-');
+}
 
   return (
     <form onSubmit={addExpense}>
@@ -56,14 +74,19 @@ const ExpenseForm = (props) => {
         <div className="new-expense__control">
           <label>Date</label>
           <input
+            asp-for="MyDate"
+            asp-format="{0:yyyy-MM-dd}"
             type="date"
             min="2020-01-01"
             max="2023-12-31"
-            value={expenseData.date}
+            value={formatDate(expenseData.date)}
             onChange={addDate}
           />
         </div>
         <div className="new-expense__actions">
+          <button type="button" onClick={props.cancelForm}>
+            Cancel
+          </button>
           <button type="submit">Add Expense</button>
         </div>
       </div>
