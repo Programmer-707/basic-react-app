@@ -3,6 +3,7 @@ import ExpenseItem from "../ExpendItem/ExpenseItem";
 import Card from "../Wrapper/Card";
 import React, { useState } from "react";
 import ExpensesFilter from "../ExpenseFilter/ExpensesFilter";
+import ExpensesChart from "./components/ExpensesChart";
 
 function ExpenseItems(props) {
   const [filteredExpenses, setFilteredExpenses] = useState(props.expenses);
@@ -17,9 +18,14 @@ function ExpenseItems(props) {
   return (
     <Card className="expenses">
       <ExpensesFilter selectFilterYear={filterByYear} />
-      {filteredExpenses.map((expense) => (
-        <ExpenseItem expense={expense} key={expense.id} />
-      ))}
+      <ExpensesChart expenses={filteredExpenses} />
+      {filteredExpenses.length === 0 ? (
+        <p style={{color: 'white', textAlign: 'center'}}>Expense not found</p>
+      ) : (
+        filteredExpenses.map((expense) => (
+          <ExpenseItem expense={expense} key={expense.id} />
+        ))
+      )}
     </Card>
   );
 }
